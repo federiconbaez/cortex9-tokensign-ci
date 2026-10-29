@@ -1,0 +1,417 @@
+{
+  "prereg_sha256": "aa1095f371a0a688bcd9ecb569aebfd92dee27fdaa118a5f40c5e354a5ce0c7c",
+  "cases": [
+    {
+      "name": "control_rsa",
+      "expect": "pass",
+      "ok": true,
+      "codes": [],
+      "passed": true,
+      "c_login": 0,
+      "spy_logged_calls": 42,
+      "ms": 38.1
+    },
+    {
+      "name": "control_ec",
+      "expect": "pass",
+      "ok": true,
+      "codes": [],
+      "passed": true,
+      "c_login": 0,
+      "spy_logged_calls": 40,
+      "ms": 27.2
+    },
+    {
+      "name": "chain_incomplete",
+      "expect": "chain.incomplete",
+      "ok": false,
+      "codes": [
+        "chain.incomplete"
+      ],
+      "passed": true,
+      "c_login": 0,
+      "spy_logged_calls": 40,
+      "ms": 29.4
+    },
+    {
+      "name": "wrong_slot",
+      "expect": "slot.key_absent",
+      "ok": false,
+      "codes": [
+        "slot.key_absent",
+        "cert.missing"
+      ],
+      "passed": true,
+      "c_login": 0,
+      "spy_logged_calls": 29,
+      "ms": 25.0
+    },
+    {
+      "name": "cert_expired",
+      "expect": "cert.expired",
+      "ok": false,
+      "codes": [
+        "cert.expired"
+      ],
+      "passed": true,
+      "c_login": 0,
+      "spy_logged_calls": 40,
+      "ms": 27.2
+    },
+    {
+      "name": "tsa_down",
+      "expect": "tsa.unreachable",
+      "ok": false,
+      "codes": [
+        "tsa.unreachable"
+      ],
+      "passed": true,
+      "c_login": 0,
+      "spy_logged_calls": 40,
+      "ms": 19.6
+    },
+    {
+      "name": "wrong_module",
+      "expect": "module.*",
+      "ok": false,
+      "codes": [
+        "module.token_absent",
+        "cert.missing"
+      ],
+      "passed": true,
+      "c_login": 0,
+      "spy_logged_calls": 4,
+      "ms": 16.9
+    },
+    {
+      "name": "pin_final_try",
+      "expect": "pin.final_try",
+      "ok": false,
+      "codes": [
+        "pin.final_try"
+      ],
+      "passed": true,
+      "c_login": 0,
+      "spy_logged_calls": 40,
+      "ms": 30.5
+    }
+  ],
+  "signing": {
+    "count": 50,
+    "signed": 50,
+    "osslsigncode_verify_ok": 50,
+    "per_binary": [
+      {
+        "n": 0,
+        "token": "cx9-rsa",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 1,
+        "token": "cx9-ec",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 2,
+        "token": "cx9-rsa",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 3,
+        "token": "cx9-ec",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 4,
+        "token": "cx9-rsa",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 5,
+        "token": "cx9-ec",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 6,
+        "token": "cx9-rsa",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 7,
+        "token": "cx9-ec",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 8,
+        "token": "cx9-rsa",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 9,
+        "token": "cx9-ec",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 10,
+        "token": "cx9-rsa",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 11,
+        "token": "cx9-ec",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 12,
+        "token": "cx9-rsa",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 13,
+        "token": "cx9-ec",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 14,
+        "token": "cx9-rsa",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 15,
+        "token": "cx9-ec",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 16,
+        "token": "cx9-rsa",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 17,
+        "token": "cx9-ec",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 18,
+        "token": "cx9-rsa",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 19,
+        "token": "cx9-ec",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 20,
+        "token": "cx9-rsa",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 21,
+        "token": "cx9-ec",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 22,
+        "token": "cx9-rsa",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 23,
+        "token": "cx9-ec",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 24,
+        "token": "cx9-rsa",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 25,
+        "token": "cx9-ec",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 26,
+        "token": "cx9-rsa",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 27,
+        "token": "cx9-ec",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 28,
+        "token": "cx9-rsa",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 29,
+        "token": "cx9-ec",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 30,
+        "token": "cx9-rsa",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 31,
+        "token": "cx9-ec",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 32,
+        "token": "cx9-rsa",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 33,
+        "token": "cx9-ec",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 34,
+        "token": "cx9-rsa",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 35,
+        "token": "cx9-ec",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 36,
+        "token": "cx9-rsa",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 37,
+        "token": "cx9-ec",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 38,
+        "token": "cx9-rsa",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 39,
+        "token": "cx9-ec",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 40,
+        "token": "cx9-rsa",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 41,
+        "token": "cx9-ec",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 42,
+        "token": "cx9-rsa",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 43,
+        "token": "cx9-ec",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 44,
+        "token": "cx9-rsa",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 45,
+        "token": "cx9-ec",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 46,
+        "token": "cx9-rsa",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 47,
+        "token": "cx9-ec",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 48,
+        "token": "cx9-rsa",
+        "signed": true,
+        "verified": true
+      },
+      {
+        "n": 49,
+        "token": "cx9-ec",
+        "signed": true,
+        "verified": true
+      }
+    ]
+  },
+  "login_counter_control": {
+    "sign_rc": 0,
+    "c_login": 1
+  },
+  "summary": {
+    "injected_detected": "6/6",
+    "controls_pass": "2/2",
+    "c_login_during_preflight": 0,
+    "login_counter_control_c_login": 1,
+    "osslsigncode_verify": "50/50"
+  }
+}

@@ -67,6 +67,15 @@ jobs:
           @{ signtool_verify_pa = "$ok/50"; timestamped = "$ts/50"; authenticode_valid = "$ps/50"; executed = "$ran/50" } |
             ConvertTo-Json | Set-Content results-windows.json
           if ($ok -ne 50) { throw "UMBRAL NO CUMPLIDO: signtool verify /pa $ok/50" }
+          # controles negativos: signtool tiene que rechazar un binario alterado
+          $bad = "art/tampered.exe"
+          $bytes = [System.IO.File]::ReadAllBytes($files[0].FullName)
+          $bytes[0x400] = $bytes[0x400] -bxor 0xFF
+          [System.IO.File]::WriteAllBytes((Resolve-Path art).Path + "\tampered.exe", $bytes)
+          & $signtool.FullName verify /pa $bad 2>&1 | Out-Null
+          if ($LASTEXITCODE -eq 0) { throw "control negativo: signtool aceptó un binario alterado" }
+          Write-Host "control negativo: binario alterado rechazado (exit $LASTEXITCODE)"
+          $global:LASTEXITCODE = 0
       - uses: actions/upload-artifact@v4
         with:
           name: results-windows

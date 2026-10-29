@@ -1,0 +1,12 @@
+control_rsa        esperado=pass                 errores=[] C_Login=0 llamadas_spy=42 OK
+control_ec         esperado=pass                 errores=[] C_Login=0 llamadas_spy=40 OK
+chain_incomplete   esperado=chain.incomplete     errores=['chain.incomplete'] C_Login=0 llamadas_spy=40 OK
+wrong_slot         esperado=slot.key_absent      errores=['slot.key_absent', 'cert.missing'] C_Login=0 llamadas_spy=29 OK
+cert_expired       esperado=cert.expired         errores=['cert.expired'] C_Login=0 llamadas_spy=40 OK
+tsa_down           esperado=tsa.unreachable      errores=['tsa.unreachable'] C_Login=0 llamadas_spy=40 OK
+wrong_module       esperado=module.*             errores=['module.token_absent', 'cert.missing'] C_Login=0 llamadas_spy=4 OK
+pin_final_try      esperado=pin.final_try        errores=['pin.final_try'] C_Login=0 llamadas_spy=40 OK
+control del contador: firma vía spy rc=0 C_Login=1
+corpus: firmados 50/50, osslsigncode verify OK 50/50
+{"injected_detected": "6/6", "controls_pass": "2/2", "c_login_during_preflight": 0, "login_counter_control_c_login": 1, "osslsigncode_verify": "50/50"}
+todos los umbrales de Linux cumplidos
