@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tokensign"
+version = "0.1.0"
+description = "Preflight que no quema PINs, firma y verificación Authenticode con token PKCS#11 desde Linux"
+license = {text = "Apache-2.0"}
+requires-python = ">=3.10"
+dependencies = ["cryptography>=42"]
+
+[project.scripts]
+tokensign = "tokensign.cli:main"
+
+[tool.setuptools]
+packages = ["tokensign"]
