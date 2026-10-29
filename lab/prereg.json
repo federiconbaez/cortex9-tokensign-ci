@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "description": "Pre-registro de tokensign-ci: corpus de fallas inyectadas, corpus de firma y umbrales. Se versiona antes de la primera medición.",
+  "preflight_cases": [
+    {"name": "control_rsa",      "token": "cx9-rsa", "key_id": "01", "module": "softhsm", "chain": "chain_full",     "cert": null,              "tsa": "up",   "token_flags": null,      "expect": "pass"},
+    {"name": "control_ec",       "token": "cx9-ec",  "key_id": "01", "module": "softhsm", "chain": "chain_full",     "cert": null,              "tsa": "up",   "token_flags": null,      "expect": "pass"},
+    {"name": "chain_incomplete", "token": "cx9-ec",  "key_id": "01", "module": "softhsm", "chain": "chain_no_inter", "cert": null,              "tsa": "up",   "token_flags": null,      "expect": "chain.incomplete"},
+    {"name": "wrong_slot",       "token": "cx9-ec",  "key_id": "02", "module": "softhsm", "chain": "chain_full",     "cert": null,              "tsa": "up",   "token_flags": null,      "expect": "slot.key_absent"},
+    {"name": "cert_expired",     "token": "cx9-ec",  "key_id": "01", "module": "softhsm", "chain": "chain_full",     "cert": "ec_cert_expired", "tsa": "up",   "token_flags": null,      "expect": "cert.expired"},
+    {"name": "tsa_down",         "token": "cx9-ec",  "key_id": "01", "module": "softhsm", "chain": "chain_full",     "cert": null,              "tsa": "down", "token_flags": null,      "expect": "tsa.unreachable"},
+    {"name": "wrong_module",     "token": "cx9-ec",  "key_id": "01", "module": "opensc",  "chain": "chain_full",     "cert": null,              "tsa": "up",   "token_flags": null,      "expect": "module.*"},
+    {"name": "pin_final_try",    "token": "cx9-ec",  "key_id": "01", "module": "shim",    "chain": "chain_full",     "cert": null,              "tsa": "up",   "token_flags": "0x20000", "expect": "pin.final_try"}
+  ],
+  "login_counter": "pkcs11-spy de OpenSC envuelve el módulo en cada corrida de preflight; se cuentan las líneas 'C_Login' del log. Control positivo: una firma real a través del mismo spy debe registrar >= 1 C_Login, si no la medición es inválida.",
+  "sign_corpus": {
+    "count": 50,
+    "programs": "50 programas C distintos (main imprime 'cortex9 tokensign lab binario N', N=0..49), compilados con x86_64-w64-mingw32-gcc -O2 -s",
+    "split": {"cx9-rsa": "N par (25, RSA-3072)", "cx9-ec": "N impar (25, EC P-256)"},
+    "options": "sha256, cadena intermedia (-ac), timestamp RFC 3161 de la TSA local"
+  },
+  "thresholds": {
+    "injected_detected": "6/6 con el código esperado y preflight bloqueante (exit != 0); 'module.*' acepta module.load_failed o module.token_absent",
+    "controls_pass": "2/2 sin errores (0 falsos positivos)",
+    "c_login_during_preflight": "0 en las 8 corridas",
+    "osslsigncode_verify": "50/50 con CAfile = raíz del laboratorio y TSA-CAfile = raíz",
+    "signtool_verify_pa": "50/50 en windows-latest de GitHub Actions con la raíz del laboratorio importada en LocalMachine\\Root"
+  }
+}

@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  linux:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Dependencias (softhsm2, opensc, osslsigncode, mingw)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y softhsm2 opensc osslsigncode libengine-pkcs11-openssl \
+            gcc-mingw-w64-x86-64 libp11-kit-dev
+          pip install "cryptography>=42"
+          osslsigncode --version | head -1
+          pkcs11-tool --version 2>&1 | head -1 || true
+      - name: Tests (un test salteado hace fallar el job)
+        run: python -m tests.run
+      - name: Medición pre-registrada (lab/prereg.json)
+        run: python -m lab.measure --out results-linux.json --corpus-out signed
+      - uses: actions/upload-artifact@v4
+        with:
+          name: signed-corpus
+          path: |
+            signed/
+            results-linux.json
+          if-no-files-found: error
+
+  windows-signtool:
+    needs: linux
+    runs-on: windows-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: signed-corpus
+          path: art
+      - name: signtool verify /pa sobre los 50 binarios (raíz del laboratorio importada)
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          Copy-Item art/signed/lab-root.pem art/lab-root.cer
+          Import-Certificate -FilePath art/lab-root.cer -CertStoreLocation Cert:\LocalMachine\Root | Out-Null
+          $signtool = Get-ChildItem "C:\Program Files (x86)\Windows Kits\10\bin\*\x64\signtool.exe" |
+            Sort-Object FullName -Descending | Select-Object -First 1
+          if (-not $signtool) { throw "signtool.exe no encontrado" }
+          Write-Host "signtool: $($signtool.FullName)"
+          $files = Get-ChildItem art/signed/*.exe
+          if ($files.Count -ne 50) { throw "se esperaban 50 binarios, hay $($files.Count)" }
+          $ok = 0; $ts = 0; $ps = 0; $ran = 0
+          foreach ($f in $files) {
+            $out = & $signtool.FullName verify /pa /v $f.FullName 2>&1 | Out-String
+            if ($LASTEXITCODE -eq 0) { $ok++ } else { Write-Host "FALLA $($f.Name)"; Write-Host $out }
+            if ($out -match "The signature is timestamped") { $ts++ }
+            $sig = Get-AuthenticodeSignature $f.FullName
+            if ($sig.Status -eq "Valid") { $ps++ }
+            $run = & $f.FullName
+            if ($run -match "cortex9 tokensign lab binario") { $ran++ }
+          }
+          Write-Host "signtool verify /pa OK: $ok/50; con timestamp: $ts/50; Get-AuthenticodeSignature Valid: $ps/50; ejecutados: $ran/50"
+          @{ signtool_verify_pa = "$ok/50"; timestamped = "$ts/50"; authenticode_valid = "$ps/50"; executed = "$ran/50" } |
+            ConvertTo-Json | Set-Content results-windows.json
+          if ($ok -ne 50) { throw "UMBRAL NO CUMPLIDO: signtool verify /pa $ok/50" }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: results-windows
+          path: results-windows.json
